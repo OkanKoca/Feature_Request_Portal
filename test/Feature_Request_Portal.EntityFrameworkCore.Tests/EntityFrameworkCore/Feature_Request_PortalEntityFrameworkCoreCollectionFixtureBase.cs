@@ -1,0 +1,9 @@
+﻿using Feature_Request_Portal.EntityFrameworkCore;
+using Xunit;
+
+namespace Feature_Request_Portal.EntityFrameworkCore;
+
+public class Feature_Request_PortalEntityFrameworkCoreCollectionFixtureBase : ICollectionFixture<Feature_Request_PortalEntityFrameworkCoreFixture>
+{
+
+}

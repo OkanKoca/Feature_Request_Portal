@@ -1,0 +1,8 @@
+﻿using Feature_Request_Portal.EntityFrameworkCore;
+
+namespace Feature_Request_Portal;
+
+public class Feature_Request_PortalWebCollection : Feature_Request_PortalEntityFrameworkCoreCollectionFixtureBase
+{
+
+}

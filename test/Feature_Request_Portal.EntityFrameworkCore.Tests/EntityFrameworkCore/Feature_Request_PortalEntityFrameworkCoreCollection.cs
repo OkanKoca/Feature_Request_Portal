@@ -1,0 +1,9 @@
+﻿using Xunit;
+
+namespace Feature_Request_Portal.EntityFrameworkCore;
+
+[CollectionDefinition(Feature_Request_PortalTestConsts.CollectionDefinitionName)]
+public class Feature_Request_PortalEntityFrameworkCoreCollection : ICollectionFixture<Feature_Request_PortalEntityFrameworkCoreFixture>
+{
+
+}
