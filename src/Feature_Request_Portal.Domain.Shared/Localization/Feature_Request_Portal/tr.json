@@ -38,6 +38,7 @@
     "SeeAllUsers": "Tüm Kullanıcıları Gör",
     "TakePhoto": "Fotoğraf Çek",
     "ChoosePhoto": "Fotoğraf Seç",
-    "Feature_Request_Portal:00001": "Bu talebe zaten oy verdiniz."
+    "Feature_Request_Portal:00001": "Bu talebe zaten oy verdiniz.",
+    "Feature_Request_Portal:00002": "Geçersiz durum."
   }
 }

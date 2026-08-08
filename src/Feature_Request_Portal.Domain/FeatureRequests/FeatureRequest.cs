@@ -24,7 +24,7 @@ namespace Feature_Request_Portal.FeatureRequests
 
         }
 
-        public FeatureRequest(Guid id, string title, string? description) : base (id)
+        public FeatureRequest(Guid id, string title, string? description) : base(id)
         {
             Check.NotNullOrWhiteSpace(title, nameof(title), FeatureRequestConsts.MaxTitleLength, FeatureRequestConsts.MinTitleLength);
             Check.Length(description, nameof(description), FeatureRequestConsts.MaxDescriptionLength);
@@ -39,7 +39,7 @@ namespace Feature_Request_Portal.FeatureRequests
         {
             Check.NotNull(guidGenerator, nameof(guidGenerator));
 
-            if(_votes.Exists(v => v.CreatorId == userId))
+            if (_votes.Exists(v => v.CreatorId == userId))
             {
                 throw new BusinessException(Feature_Request_PortalDomainErrorCodes.AlreadyVoted);
             }
@@ -49,5 +49,21 @@ namespace Feature_Request_Portal.FeatureRequests
             VoteCount++;
         }
 
+        public void AddComment(IGuidGenerator guidGenerator, string text)
+        {
+            Check.NotNull(guidGenerator, nameof(guidGenerator));
+
+            var comment = new Comment(guidGenerator.Create(), Id, text);
+            _comments.Add(comment);
+        }
+
+        public void SetStatus(FeatureRequestStatus status)
+        {
+            if (!Enum.IsDefined<FeatureRequestStatus>(status))
+            {
+                throw new BusinessException(Feature_Request_PortalDomainErrorCodes.InvalidStatus);
+            }
+            Status = status;
+        }
     }
 }
