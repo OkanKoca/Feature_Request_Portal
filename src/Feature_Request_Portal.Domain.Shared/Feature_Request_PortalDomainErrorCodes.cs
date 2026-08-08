@@ -2,5 +2,5 @@
 
 public static class Feature_Request_PortalDomainErrorCodes
 {
-    /* You can add your business exception error codes here, as constants */
+    public const string AlreadyVoted = "Feature_Request_Portal:00001";
 }

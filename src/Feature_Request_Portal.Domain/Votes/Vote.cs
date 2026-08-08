@@ -9,9 +9,10 @@ namespace Feature_Request_Portal.Votes
         protected Vote()
         {
         }
-        public Vote(Guid id, Guid featureRequestId) : base(id)
+        public Vote(Guid id, Guid featureRequestId, Guid creatorId) : base(id)
         {
             FeatureRequestId = featureRequestId;
+            CreatorId = creatorId;
         }
     }
 }

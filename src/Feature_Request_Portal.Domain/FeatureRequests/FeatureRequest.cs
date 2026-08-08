@@ -4,6 +4,7 @@ using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp;
 using Feature_Request_Portal.Comments;
 using Feature_Request_Portal.Votes;
+using Volo.Abp.Guids;
 
 namespace Feature_Request_Portal.FeatureRequests
 {
@@ -34,6 +35,19 @@ namespace Feature_Request_Portal.FeatureRequests
             VoteCount = 0;
         }
 
+        public void AddVote(IGuidGenerator guidGenerator, Guid userId)
+        {
+            Check.NotNull(guidGenerator, nameof(guidGenerator));
+
+            if(_votes.Exists(v => v.CreatorId == userId))
+            {
+                throw new BusinessException(Feature_Request_PortalDomainErrorCodes.AlreadyVoted);
+            }
+
+            var vote = new Vote(guidGenerator.Create(), Id, userId);
+            _votes.Add(vote);
+            VoteCount++;
+        }
 
     }
 }
