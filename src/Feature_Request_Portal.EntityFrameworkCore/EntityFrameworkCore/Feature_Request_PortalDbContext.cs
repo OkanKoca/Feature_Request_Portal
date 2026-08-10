@@ -16,6 +16,9 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using Feature_Request_Portal.FeatureRequests;
+using Feature_Request_Portal.Votes;
+using Feature_Request_Portal.Comments;
 
 namespace Feature_Request_Portal.EntityFrameworkCore;
 
@@ -32,6 +35,8 @@ public class Feature_Request_PortalDbContext :
     public DbSet<Author> Authors { get; set; }
 
     public DbSet<Book> Books { get; set; }
+
+    public DbSet<FeatureRequest> FeatureRequests { get; set; }
 
     #region Entities from the modules
 
@@ -110,5 +115,30 @@ public class Feature_Request_PortalDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+
+        builder.Entity<FeatureRequest>(b =>
+        {
+            b.ToTable(Feature_Request_PortalConsts.DbTablePrefix + "FeatureRequests", Feature_Request_PortalConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props (CreationTime, CreatorId etc.)
+            b.Property(x => x.Title).IsRequired().HasMaxLength(FeatureRequestConsts.MaxTitleLength);
+            b.Property(x => x.Description).HasMaxLength(FeatureRequestConsts.MaxDescriptionLength);
+            b.HasMany(x => x.Votes).WithOne().HasForeignKey(x => x.FeatureRequestId);
+            b.HasMany(x => x.Comments).WithOne().HasForeignKey(x => x.FeatureRequestId);
+        });
+
+        builder.Entity<Vote>(b =>
+        {
+            b.ToTable(Feature_Request_PortalConsts.DbTablePrefix + "Votes", Feature_Request_PortalConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.HasIndex(x => new { x.FeatureRequestId, x.CreatorId }).IsUnique();
+        });
+
+        builder.Entity<Comment>(b =>
+        {
+            b.ToTable(Feature_Request_PortalConsts.DbTablePrefix + "Comments", Feature_Request_PortalConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.Text).IsRequired().HasMaxLength(CommentConsts.MaxTextLength);
+        });
+
     }
 }
