@@ -14,6 +14,9 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using Volo.Abp.Studio;
+using Volo.Abp.EntityFrameworkCore.DependencyInjection;
+using Feature_Request_Portal.FeatureRequests;
+using Microsoft.EntityFrameworkCore;
 
 namespace Feature_Request_Portal.EntityFrameworkCore;
 
@@ -61,6 +64,19 @@ public class Feature_Request_PortalEntityFrameworkCoreModule : AbpModule
 
             options.UseNpgsql();
 
+        });
+
+        Configure<AbpEntityOptions>(options =>
+        {
+            options.Entity<FeatureRequest>(featureRequestsOptions =>
+            {
+                featureRequestsOptions.DefaultWithDetailsFunc = featureRequestRepository =>
+                {
+                    return featureRequestRepository
+                        .Include(x => x.Votes)
+                        .Include(x => x.Comments);
+                };
+            });
         });
         
     }
