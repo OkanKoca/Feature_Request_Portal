@@ -1,16 +1,18 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Feature_Request_Portal.Comments;
+using Feature_Request_Portal.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
-using Feature_Request_Portal.Comments;
-using System.Linq;
-using System.Linq.Dynamic.Core;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Identity;
+using Volo.Abp.Users;
 
 namespace Feature_Request_Portal.FeatureRequests
 {
@@ -87,27 +89,48 @@ namespace Feature_Request_Portal.FeatureRequests
 
         public async Task<FeatureRequestDto> CreateAsync(CreateFeatureRequestDto input)
         {
-            throw new NotImplementedException();
+            var featureRequest = new FeatureRequest(GuidGenerator.Create(), input.Title, input.Description);
+
+            await _featureRequestRepository.InsertAsync(featureRequest, autoSave: true);
+
+            return ObjectMapper.Map<FeatureRequest, FeatureRequestDto>(featureRequest);
         }
 
         public async Task<int> VoteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var featureRequest = await _featureRequestRepository.GetAsync(id);
+            featureRequest.AddVote(GuidGenerator, CurrentUser.GetId());
+
+            await _featureRequestRepository.UpdateAsync(featureRequest, autoSave: true);
+
+            return featureRequest.VoteCount;
         }
 
         public async Task<CommentDto> AddCommentAsync(Guid id, CreateCommentDto input)
         {
-            throw new NotImplementedException();
-        }
+            var featureRequest = await _featureRequestRepository.GetAsync(id);
+            var comment = featureRequest.AddComment(GuidGenerator, input.Text);
 
+            await _featureRequestRepository.UpdateAsync(featureRequest, autoSave: true);
+
+            var commentDto = ObjectMapper.Map<Comment, CommentDto>(comment);
+            commentDto.CreatorName = CurrentUser.UserName ?? string.Empty;
+            return commentDto;
+        }
+        [Authorize(Feature_Request_PortalPermissions.FeatureRequests.ChangeStatus)]
         public async Task ChangeStatusAsync(Guid id, FeatureRequestStatus status)
         {
-            throw new NotImplementedException();
+            var featureRequest = await _featureRequestRepository.GetAsync(id, false);
+
+            featureRequest.SetStatus(status);
+
+            await _featureRequestRepository.UpdateAsync(featureRequest, autoSave: true);
         }
 
+        [Authorize(Feature_Request_PortalPermissions.FeatureRequests.Delete)]
         public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _featureRequestRepository.DeleteAsync(id, autoSave: true);
         }
 
         private static string NormalizeSorting(string? sorting)

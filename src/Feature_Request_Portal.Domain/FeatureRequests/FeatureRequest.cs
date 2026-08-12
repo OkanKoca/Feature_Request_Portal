@@ -49,12 +49,13 @@ namespace Feature_Request_Portal.FeatureRequests
             VoteCount++;
         }
 
-        public void AddComment(IGuidGenerator guidGenerator, string text)
+        public Comment AddComment(IGuidGenerator guidGenerator, string text)
         {
             Check.NotNull(guidGenerator, nameof(guidGenerator));
 
             var comment = new Comment(guidGenerator.Create(), Id, text);
             _comments.Add(comment);
+            return comment;
         }
 
         public void SetStatus(FeatureRequestStatus status)

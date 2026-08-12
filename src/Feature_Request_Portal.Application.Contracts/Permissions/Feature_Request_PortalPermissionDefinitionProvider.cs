@@ -22,6 +22,10 @@ public class Feature_Request_PortalPermissionDefinitionProvider : PermissionDefi
         authorsPermission.AddChild(Feature_Request_PortalPermissions.Authors.Delete, L("Permission:Authors.Delete"));
         //Define your own permissions here. Example:
         //myGroup.AddPermission(Feature_Request_PortalPermissions.MyPermission1, L("Permission:MyPermission1"));
+
+        var featureRequestsPermission = myGroup.AddPermission(Feature_Request_PortalPermissions.FeatureRequests.Default, L("Permission:FeatureRequests"));
+        featureRequestsPermission.AddChild(Feature_Request_PortalPermissions.FeatureRequests.Delete, L("Permission:FeatureRequests.Delete"));
+        featureRequestsPermission.AddChild(Feature_Request_PortalPermissions.FeatureRequests.ChangeStatus, L("Permission:FeatureRequests.ChangeStatus"));
     }
 
     private static LocalizableString L(string name)

@@ -39,6 +39,9 @@
     "TakePhoto": "Fotoğraf Çek",
     "ChoosePhoto": "Fotoğraf Seç",
     "Feature_Request_Portal:00001": "Bu talebe zaten oy verdiniz.",
-    "Feature_Request_Portal:00002": "Geçersiz durum."
+    "Feature_Request_Portal:00002": "Geçersiz durum.",
+    "Permission:FeatureRequests": "Özellik Talepleri",
+    "Permission:FeatureRequests.Delete": "Özellik Talepleri Sil",
+    "Permission:FeatureRequests.ChangeStatus": "Özellik Talepleri Durumu Değiştir"
   }
 }
