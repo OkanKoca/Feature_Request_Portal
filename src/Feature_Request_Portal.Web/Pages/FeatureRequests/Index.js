@@ -20,7 +20,7 @@
                 data: "title",
                 orderable: false,
                 render: function (data, type, row) {
-                    var url = abp.appPath + 'FeatureRequests/' + row.id;
+                    var url = abp.appPath + 'FeatureRequests/Detail/' + row.id;
                     return '<a href="' + url + '">' + $('<div>').text(data).html() + '</a>';
                 }
             },

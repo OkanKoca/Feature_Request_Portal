@@ -56,6 +56,19 @@
     "Enum:FeatureRequestStatus.2": "Reddedildi",
     "Enum:FeatureRequestStatus.3": "Planlandı",
     "Enum:FeatureRequestStatus.4": "Tamamlandı",
-    "Enum:FeatureRequestStatus.5": "İptal Edildi"
+    "Enum:FeatureRequestStatus.5": "İptal Edildi",
+    "Comments": "Yorumlar",
+    "NewComment": "Yorumunuz",
+    "AddComment": "Yorum Ekle",
+    "NoComments": "Henüz yorum yapılmamış.",
+    "Vote": "Oy Ver",
+    "AlreadyVoted": "Oy Verdiniz",
+    "VoteRecorded": "Oyunuz kaydedildi.",
+    "AdminActions": "Yönetici İşlemleri",
+    "ChangeStatus": "Durumu Değiştir",
+    "Delete": "Sil",
+    "DeleteConfirmationMessage": "Bu talebi silmek istediğinize emin misiniz?",
+    "DeletedSuccessfully": "Silindi."
+
   }
 }

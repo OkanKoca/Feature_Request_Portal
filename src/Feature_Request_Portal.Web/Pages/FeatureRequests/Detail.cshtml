@@ -1,0 +1,125 @@
+﻿@page "{id:guid}"
+@using Feature_Request_Portal.FeatureRequests
+@using Feature_Request_Portal.Localization
+@using Feature_Request_Portal.Permissions
+@using Feature_Request_Portal.Web.Pages.FeatureRequests
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.Users
+@model DetailModel
+@inject IStringLocalizer<Feature_Request_PortalResource> L
+@inject ICurrentUser CurrentUser
+@inject IAuthorizationService AuthorizationService
+
+@section scripts{
+    <abp-script src="/Pages/FeatureRequests/Detail.js"></abp-script>
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_9">
+                <abp-card-title>@Model.FeatureRequest.Title</abp-card-title>
+                <small class="text-muted">
+                    @L["CreationTime"] : @Model.FeatureRequest.CreationTime.ToShortDateString()
+                </small>
+            </abp-column>
+            <abp-column size-md="_3" class="text-end">
+                <span class="badge bg-secondary fs-6">
+                    @L["Enum:FeatureRequestStatus." + ((int)Model.FeatureRequest.Status)]
+                </span>
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <p>@Model.FeatureRequest.Description</p>
+
+        <hr />
+
+        <div class="d-flex align-items-center gap-3">
+            <span class="fs-4">
+                <i class="fa fa-thumbs-up"></i>
+                <span id="VoteCount">@Model.FeatureRequest.VoteCount</span>
+            </span>
+
+            @if(CurrentUser.IsAuthenticated)
+            {
+                <button id="VoteButton"
+                    class="btn btn-primary"
+                    data-id="@Model.FeatureRequest.Id"
+                    disabled="@Model.FeatureRequest.IsVotedByCurrentUser">
+                    @(Model.FeatureRequest.IsVotedByCurrentUser ? L["AlreadyVoted"] : L["Vote"])
+                </button>            
+            }
+        </div>
+
+    </abp-card-body>
+</abp-card>
+
+@if(await AuthorizationService.IsGrantedAsync(Feature_Request_PortalPermissions.FeatureRequests.ChangeStatus) 
+|| await AuthorizationService.IsGrantedAsync(Feature_Request_PortalPermissions.FeatureRequests.Delete))
+{
+    <abp-card class="mt-3">
+        <abp-card-header>
+            <abp-card-title>
+                @L["AdminActions"]
+            </abp-card-title>
+        </abp-card-header>
+
+        <abp-card-body>
+            @if(await AuthorizationService.IsGrantedAsync(Feature_Request_PortalPermissions.FeatureRequests.ChangeStatus))
+            {
+                <form method="post" asp-page-handler="Status" class="row g-2 align-items-end">
+                    <div class="col-md-6">
+                        <abp-select asp-for="NewStatus" 
+                            label="@L["Status"].Value"
+                        />
+                    </div>
+                    <div class="col-md-3">
+                        <abp-button type="Submit" button-type="Primary" text="@L["ChangeStatus"].Value" class="mb-3"/>
+                    </div>
+                </form>                
+            }
+            @if(await AuthorizationService.IsGrantedAsync(Feature_Request_PortalPermissions.FeatureRequests.Delete))
+            {
+                <hr/>
+
+                <abp-button button-type="Danger" text="@L["Delete"].Value" data-id="@Model.FeatureRequest.Id" id="DeleteButton"/>
+            }
+        </abp-card-body>
+    </abp-card>
+}
+
+<abp-card class="mt-3">
+    <abp-card-header>
+        <abp-card-title>
+            @L["Comments"]
+            (@Model.FeatureRequest.Comments.Count)
+        </abp-card-title>
+    </abp-card-header>
+    <abp-card-body>
+        @if(CurrentUser.IsAuthenticated)
+        {
+            <form method="post" asp-page-handler="Comment" class="mb-4">
+                <abp-input asp-for="NewComment.Text" label="@L["NewComment"].Value"/> 
+                <abp-button type="Submit" button-type="Primary" text="@L["AddComment"].Value"/>   
+            </form>
+            <hr />
+        }
+
+        @if (!Model.FeatureRequest.Comments.Any())
+        {
+            <p class="text-muted">@L["NoComments"]</p>           
+        }
+
+        @foreach(var comment in Model.FeatureRequest.Comments)
+        {
+            <div class="border-bottom pb-2 mb-2">
+                <strong>@comment.CreatorName</strong>
+                <small class="text-muted">@comment.CreationTime.ToString("g")</small>
+                <p class="mb-0 mt-1">@comment.Text</p>
+            </div>                    
+        }
+
+    </abp-card-body>
+</abp-card>
