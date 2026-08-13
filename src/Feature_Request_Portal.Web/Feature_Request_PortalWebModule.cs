@@ -158,12 +158,6 @@ public class Feature_Request_PortalWebModule : AbpModule
             options.IsDynamicPermissionStoreEnabled = true;
         });
         
-        Configure<RazorPagesOptions>(options =>
-        {
-            options.Conventions.AuthorizePage("/Books/Index", Feature_Request_PortalPermissions.Books.Default);
-            options.Conventions.AuthorizePage("/Books/CreateModal", Feature_Request_PortalPermissions.Books.Create);
-            options.Conventions.AuthorizePage("/Books/EditModal", Feature_Request_PortalPermissions.Books.Edit);
-        });
     }
 
 
