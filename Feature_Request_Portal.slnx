@@ -1,7 +1,4 @@
 <Solution>
-    <Configurations>
-        <Platform Name="Any CPU" />
-    </Configurations>
     <Folder Name="/src/">
         <Project Path="src/Feature_Request_Portal.Domain/Feature_Request_Portal.Domain.csproj" />
         <Project Path="src/Feature_Request_Portal.Application/Feature_Request_Portal.Application.csproj" />

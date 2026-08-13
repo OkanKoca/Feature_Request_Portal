@@ -1,0 +1,29 @@
+﻿@page
+@using Feature_Request_Portal.Localization
+@using Feature_Request_Portal.Web.Pages.FeatureRequests
+@using Microsoft.Extensions.Localization
+@model CreateModel
+@inject IStringLocalizer<Feature_Request_PortalResource> L
+@{
+    <abp-card>
+        <abp-card-header>
+            <abp-card-title>@L["NewFeatureRequest"]</abp-card-title>
+        </abp-card-header>
+
+        <abp-card-body>
+            <form method="post">
+                <abp-input asp-for="FeatureRequest.Title" label="@L["Title"].Value"/>
+
+                <div class="mb-3">
+                    <label class="form-label" asp-for="FeatureRequest.Description">@L["Description"]</label>
+                    <textarea class="form-control" asp-for="FeatureRequest.Description"></textarea>
+                    <span class="text-danger" asp-validation-for="FeatureRequest.Description"></span>
+                </div>
+
+
+                <abp-button type="Submit" button-type="Primary" text="@L["Save"].Value" />
+                <a href="@Url.Content("~/FeatureRequests")" class="btn btn-secondary">@L["Cancel"]</a>
+            </form>
+        </abp-card-body>
+    </abp-card>
+}

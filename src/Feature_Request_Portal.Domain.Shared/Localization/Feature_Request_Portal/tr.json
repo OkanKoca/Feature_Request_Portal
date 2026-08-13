@@ -68,7 +68,10 @@
     "ChangeStatus": "Durumu Değiştir",
     "Delete": "Sil",
     "DeleteConfirmationMessage": "Bu talebi silmek istediğinize emin misiniz?",
-    "DeletedSuccessfully": "Silindi."
+    "DeletedSuccessfully": "Silindi.",
+    "Description": "Açıklama",
+    "Save": "Kaydet",
+    "Cancel": "İptal"
 
   }
 }
