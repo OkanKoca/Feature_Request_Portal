@@ -1,0 +1,42 @@
+﻿@page
+@using Feature_Request_Portal.Localization
+@using Feature_Request_Portal.Web.Pages.FeatureRequests
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.Users
+@model IndexModel
+@inject IStringLocalizer<Feature_Request_PortalResource> L
+@inject ICurrentUser CurrentUser
+
+
+@section scripts {
+    <abp-script src="/Pages/FeatureRequests/Index.js"></abp-script>
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_5">
+                <abp-card-title>@L["FeatureRequests"]</abp-card-title>
+            </abp-column>
+
+            <abp-column size-md="_4">
+                    <abp-select asp-for="StatusFilter" label="@L["StatusFilter"].Value"></abp-select>
+            </abp-column>
+
+            <abp-column size-md="_3" class="text-end">
+                @if (CurrentUser.IsAuthenticated)
+                {
+                    <a href="@Url.Content("~/FeatureRequests/Create")" class="btn btn-primary">
+                        <i class="fa fa-plus"></i> @L["NewFeatureRequest"]
+                    </a>
+                }
+            </abp-column>
+
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="FeatureRequestsTable"></abp-table>
+    </abp-card-body>
+</abp-card>
+
+

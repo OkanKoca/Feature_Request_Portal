@@ -42,6 +42,20 @@
     "Feature_Request_Portal:00002": "Geçersiz durum.",
     "Permission:FeatureRequests": "Özellik Talepleri",
     "Permission:FeatureRequests.Delete": "Özellik Talepleri Sil",
-    "Permission:FeatureRequests.ChangeStatus": "Özellik Talepleri Durumu Değiştir"
+    "Permission:FeatureRequests.ChangeStatus": "Özellik Talepleri Durumu Değiştir",
+    "Menu:FeatureRequests": "Özellik Talepleri",
+    "FeatureRequests": "Özellik Talepleri",
+    "Title": "Başlık",
+    "VoteCount": "Oy Sayısı",
+    "Status": "Durum",
+    "CreationTime": "Oluşturulma Tarihi",
+    "StatusFilter": "Duruma Göre Filtrele",
+    "NewFeatureRequest": "Yeni Talep",
+    "Enum:FeatureRequestStatus.0": "Beklemede",
+    "Enum:FeatureRequestStatus.1": "Onaylandı",
+    "Enum:FeatureRequestStatus.2": "Reddedildi",
+    "Enum:FeatureRequestStatus.3": "Planlandı",
+    "Enum:FeatureRequestStatus.4": "Tamamlandı",
+    "Enum:FeatureRequestStatus.5": "İptal Edildi"
   }
 }
