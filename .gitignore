@@ -281,3 +281,6 @@ src/Feature_Request_Portal.Blazor.Server.Tiered/Logs/*
 # IdentityServer temp files
 tempkey.rsa
 tempkey.jwk
+
+# Local connection strings / secrets (never commit)
+**/appsettings.secrets.json

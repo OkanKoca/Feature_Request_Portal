@@ -18,24 +18,14 @@ public class Feature_Request_PortalMenuContributor : IMenuContributor
     private static Task ConfigureMainMenuAsync(MenuConfigurationContext context)
     {
         var l = context.GetLocalizer<Feature_Request_PortalResource>();
-        //Home
-        context.Menu.AddItem(
-            new ApplicationMenuItem(
-                Feature_Request_PortalMenus.Home,
-                l["Menu:Home"],
-                "~/",
-                icon: "fa fa-home",
-                order: 1
-            )
-        );
-
+        //Ana sayfa zaten talep listesine yonlendirdigi icin ayri bir "Home" menu ogesi yok.
         context.Menu.AddItem(
             new ApplicationMenuItem(
                 Feature_Request_PortalMenus.FeatureRequests,
                 l["Menu:FeatureRequests"],
                 url: "/FeatureRequests",
                 icon: "fa fa-lightbulb",
-                order: 2
+                order: 1
             )
         );
 
