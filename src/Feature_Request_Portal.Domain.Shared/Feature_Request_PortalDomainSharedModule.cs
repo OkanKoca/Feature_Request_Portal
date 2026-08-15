@@ -45,13 +45,14 @@ public class Feature_Request_PortalDomainSharedModule : AbpModule
         Configure<AbpLocalizationOptions>(options =>
         {
             options.Resources
-                .Add<Feature_Request_PortalResource>("tr")
+                .Add<Feature_Request_PortalResource>("en")
                 .AddBaseTypes(typeof(AbpValidationResource))
                 .AddVirtualJson("/Localization/Feature_Request_Portal");
 
             options.DefaultResourceType = typeof(Feature_Request_PortalResource);
-            
-            options.Languages.Add(new LanguageInfo("tr", "tr", "Turkish")); 
+
+            options.Languages.Add(new LanguageInfo("en", "en", "English"));
+            options.Languages.Add(new LanguageInfo("tr", "tr", "Türkçe"));
 
         });
         
