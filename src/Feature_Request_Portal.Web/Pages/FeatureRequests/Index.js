@@ -40,8 +40,10 @@
                 title: l('VoteCount'),
                 data: "voteCount",
                 orderable: true,
-                // Start with the most voted requests, which is what a reader expects here.
-                orderSequence: ['desc', 'asc'],
+                // Most voted first, then least voted, then back to the server default
+                // ordering (newest first). The empty state is what DataTables uses to
+                // clear the sort, so keep it in the cycle.
+                orderSequence: ['desc', 'asc', ''],
             },
             {
                 title: l('Status'),
