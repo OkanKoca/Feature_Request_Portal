@@ -191,6 +191,8 @@ The list page requires paging, filtering and sorting, so it is built dynamically
 dotnet test
 ```
 
+> Run `abp install-libs` before the first test run (step 3 of the setup already does this). The web tests render a full page, so they fail without the client-side libraries, which are not committed to the repository.
+
 13 tests run in total: 10 were written for this project and 3 are sample tests that ship with the ABP template.
 
 | Test project | Written for this project | Coverage |
