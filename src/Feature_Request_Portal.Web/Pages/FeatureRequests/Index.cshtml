@@ -20,7 +20,12 @@
             </abp-column>
 
             <abp-column size-md="_4">
+                @* Anonymous users only ever see approved requests, so the filter would
+                   offer options that always return an empty list. *@
+                @if (CurrentUser.IsAuthenticated)
+                {
                     <abp-select asp-for="StatusFilter" label="@L["StatusFilter"].Value"></abp-select>
+                }
             </abp-column>
 
             <abp-column size-md="_3" class="text-end">

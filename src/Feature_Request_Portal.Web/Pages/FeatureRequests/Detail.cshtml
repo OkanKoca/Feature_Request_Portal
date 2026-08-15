@@ -15,6 +15,17 @@
     <abp-script src="/Pages/FeatureRequests/Detail.js"></abp-script>
 }
 
+@{
+    // Sending the current page as returnUrl brings the visitor back here after signing in.
+    var loginUrl = Url.Content("~/Account/Login")
+        + "?returnUrl="
+        + Uri.EscapeDataString(Url.Content("~/FeatureRequests/Detail/" + Model.FeatureRequest.Id));
+}
+
+<a href="@Url.Content("~/FeatureRequests")" class="btn btn-link ps-0 mb-2">
+    <i class="fa fa-arrow-left"></i> @L["BackToList"]
+</a>
+
 <abp-card>
     <abp-card-header>
         <abp-row>
@@ -25,7 +36,7 @@
                 </small>
             </abp-column>
             <abp-column size-md="_3" class="text-end">
-                <span class="badge bg-secondary fs-6">
+                <span class="badge @FeatureRequestStatusBadge.CssClass(Model.FeatureRequest.Status) fs-6">
                     @L["Enum:FeatureRequestStatus." + ((int)Model.FeatureRequest.Status)]
                 </span>
             </abp-column>
@@ -49,7 +60,11 @@
                     data-id="@Model.FeatureRequest.Id"
                     disabled="@Model.FeatureRequest.IsVotedByCurrentUser">
                     @(Model.FeatureRequest.IsVotedByCurrentUser ? L["AlreadyVoted"] : L["Vote"])
-                </button>            
+                </button>
+            }
+            else
+            {
+                <a href="@loginUrl" class="btn btn-outline-primary">@L["LoginToVote"]</a>
             }
         </div>
 
@@ -102,8 +117,15 @@
         {
             <form method="post" asp-page-handler="Comment" class="mb-4">
                 <abp-input asp-for="NewComment.Text" label="@L["NewComment"].Value"/> 
-                <abp-button type="Submit" button-type="Primary" text="@L["AddComment"].Value"/>   
+                <abp-button type="Submit" button-type="Primary" text="@L["AddComment"].Value"/>
             </form>
+            <hr />
+        }
+        else
+        {
+            <p class="text-muted">
+                <a href="@loginUrl">@L["LoginToComment"]</a>
+            </p>
             <hr />
         }
 

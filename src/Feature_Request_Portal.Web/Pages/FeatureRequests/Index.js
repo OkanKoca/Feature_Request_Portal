@@ -2,6 +2,17 @@
     var l = abp.localization.getResource('Feature_Request_Portal');
     var featureRequestsService = feature_Request_Portal.featureRequests.featureRequest;
 
+    // Same mapping as FeatureRequestStatusBadge.CssClass on the server; keep both in sync.
+    var statusBadgeClasses = {
+        0: 'bg-secondary', // Pending
+        1: 'bg-success',   // Approved
+        2: 'bg-danger',    // Rejected
+        3: 'bg-primary',   // Planned
+        4: 'bg-info',      // Completed
+        5: 'bg-dark'       // Cancelled
+    };
+
+    // Returns null when the filter is absent, which is the case for anonymous users.
     var getFilter = function () {
         return { status: $('#StatusFilter').val() || null }
     }
@@ -10,7 +21,7 @@
         serverSide: true,
         paging: true,
         pageLength: 15,
-        lengthChange: false, // sayfa boyutu sabit 15
+        lengthChange: false, // page size is fixed at 15
         order: [],
         searching: false,
         scrollX: true,
@@ -29,13 +40,18 @@
                 title: l('VoteCount'),
                 data: "voteCount",
                 orderable: true,
+                // Start with the most voted requests, which is what a reader expects here.
+                orderSequence: ['desc', 'asc'],
             },
             {
                 title: l('Status'),
                 data: "status",
                 orderable: false,
                 render: function (data) {
-                    return l('Enum:FeatureRequestStatus.' + data);
+                    var cssClass = statusBadgeClasses[data] || 'bg-secondary';
+                    return '<span class="badge ' + cssClass + '">'
+                        + l('Enum:FeatureRequestStatus.' + data)
+                        + '</span>';
                 }
             },
             {

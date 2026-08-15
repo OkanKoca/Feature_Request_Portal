@@ -25,7 +25,7 @@ public class SampleRepositoryTests : Feature_Request_PortalEntityFrameworkCoreTe
     public async Task Should_Query_AppUser()
     {
         /* Need to manually start Unit Of Work because
-         * FirstOrDefaultAsync should be executed while db connection / context is available.claudeclaudclau
+         * FirstOrDefaultAsync should be executed while db connection / context is available.
          */
         await WithUnitOfWorkAsync(async () =>
         {
