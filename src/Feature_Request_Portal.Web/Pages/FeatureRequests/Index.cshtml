@@ -12,6 +12,13 @@
     <abp-script src="/Pages/FeatureRequests/Index.js"></abp-script>
 }
 
+@{
+    // Send visitors straight to the create form once they have signed in.
+    var loginUrl = Url.Content("~/Account/Login")
+        + "?returnUrl="
+        + Uri.EscapeDataString(Url.Content("~/FeatureRequests/Create"));
+}
+
 <abp-card>
     <abp-card-header>
         <abp-row>
@@ -34,6 +41,12 @@
                     <a href="@Url.Content("~/FeatureRequests/Create")" class="btn btn-primary">
                         <i class="fa fa-plus"></i> @L["NewFeatureRequest"]
                     </a>
+                }
+                else
+                {
+                    @* Visitors cannot submit a request, but hiding the action entirely
+                       would leave them unaware that the portal accepts one. *@
+                    <a href="@loginUrl" class="btn btn-outline-primary">@L["LoginToCreateRequest"]</a>
                 }
             </abp-column>
 

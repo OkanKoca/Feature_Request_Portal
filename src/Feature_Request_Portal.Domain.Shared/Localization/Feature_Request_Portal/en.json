@@ -64,6 +64,7 @@
     "Vote": "Vote",
     "AlreadyVoted": "Already Voted",
     "LoginToVote": "Sign in to vote",
+    "LoginToCreateRequest": "Sign in to submit a request",
     "LoginToComment": "Sign in to join the discussion",
     "BackToList": "Back to list",
     "VoteRecorded": "Your vote has been recorded.",

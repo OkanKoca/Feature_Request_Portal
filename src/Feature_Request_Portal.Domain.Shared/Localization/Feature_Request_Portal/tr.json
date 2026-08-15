@@ -64,6 +64,7 @@
     "Vote": "Oy Ver",
     "AlreadyVoted": "Oy Verdiniz",
     "LoginToVote": "Oy vermek için giriş yapın",
+    "LoginToCreateRequest": "Talep oluşturmak için giriş yapın",
     "LoginToComment": "Tartışmaya katılmak için giriş yapın",
     "BackToList": "Listeye dön",
     "VoteRecorded": "Oyunuz kaydedildi.",
