@@ -10,6 +10,7 @@
         serverSide: true,
         paging: true,
         pageLength: 15,
+        lengthChange: false, // sayfa boyutu sabit 15
         order: [],
         searching: false,
         scrollX: true,
