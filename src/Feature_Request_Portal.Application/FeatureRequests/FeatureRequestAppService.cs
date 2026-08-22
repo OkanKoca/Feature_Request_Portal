@@ -44,7 +44,8 @@ namespace Feature_Request_Portal.FeatureRequests
 
             var status = input.Status;
 
-            queryable = queryable.WhereIf(!CurrentUser.IsAuthenticated, x => x.Status == FeatureRequestStatus.Approved).WhereIf(input.Status.HasValue, x => x.Status == status);
+            queryable = await ApplyVisibilityAsync(queryable);
+            queryable = queryable.WhereIf(input.Status.HasValue, x => x.Status == status);
 
             var totalCount = await AsyncExecuter.CountAsync(queryable);
            
@@ -60,7 +61,7 @@ namespace Feature_Request_Portal.FeatureRequests
         {
             var featureRequest= await _featureRequestRepository.GetAsync(id);
 
-            if(!CurrentUser.IsAuthenticated && featureRequest.Status != FeatureRequestStatus.Approved)
+            if (!await CanViewAsync(featureRequest))
             {
                 throw new EntityNotFoundException(typeof(FeatureRequest), id);
             }
@@ -99,6 +100,12 @@ namespace Feature_Request_Portal.FeatureRequests
         public async Task<int> VoteAsync(Guid id)
         {
             var featureRequest = await _featureRequestRepository.GetAsync(id);
+
+            if (!await CanViewAsync(featureRequest))
+            {
+                throw new EntityNotFoundException(typeof(FeatureRequest), id);
+            }
+
             featureRequest.AddVote(GuidGenerator, CurrentUser.GetId());
 
             await _featureRequestRepository.UpdateAsync(featureRequest, autoSave: true);
@@ -109,6 +116,12 @@ namespace Feature_Request_Portal.FeatureRequests
         public async Task<CommentDto> AddCommentAsync(Guid id, CreateCommentDto input)
         {
             var featureRequest = await _featureRequestRepository.GetAsync(id);
+
+            if (!await CanViewAsync(featureRequest))
+            {
+                throw new EntityNotFoundException(typeof(FeatureRequest), id);
+            }
+
             var comment = featureRequest.AddComment(GuidGenerator, input.Text);
 
             await _featureRequestRepository.UpdateAsync(featureRequest, autoSave: true);
@@ -131,6 +144,57 @@ namespace Feature_Request_Portal.FeatureRequests
         public async Task DeleteAsync(Guid id)
         {
             await _featureRequestRepository.DeleteAsync(id, autoSave: true);
+        }
+
+        /// <summary>
+        /// Restricts a query to what the current user is allowed to see. Only requests
+        /// nobody has reviewed yet are private; every decided status is public to
+        /// signed-in users. Visitors are limited to approved requests by the brief.
+        /// </summary>
+        private async Task<IQueryable<FeatureRequest>> ApplyVisibilityAsync(IQueryable<FeatureRequest> queryable)
+        {
+            if (!CurrentUser.IsAuthenticated)
+            {
+                return queryable.Where(x => x.Status == FeatureRequestStatus.Approved);
+            }
+
+            if (await IsModeratorAsync())
+            {
+                return queryable;
+            }
+
+            var currentUserId = CurrentUser.GetId();
+
+            return queryable.Where(x => x.Status != FeatureRequestStatus.Pending
+                                     || x.CreatorId == currentUserId);
+        }
+
+        /// <summary>
+        /// Single entity counterpart of <see cref="ApplyVisibilityAsync"/>. Both must
+        /// stay in sync, otherwise a request could be listed but not opened.
+        /// </summary>
+        private async Task<bool> CanViewAsync(FeatureRequest featureRequest)
+        {
+            if (!CurrentUser.IsAuthenticated)
+            {
+                return featureRequest.Status == FeatureRequestStatus.Approved;
+            }
+
+            if (featureRequest.Status != FeatureRequestStatus.Pending)
+            {
+                return true;
+            }
+
+            return featureRequest.CreatorId == CurrentUser.Id || await IsModeratorAsync();
+        }
+
+        /// <summary>
+        /// There is no separate "view all" permission; whoever moderates the statuses
+        /// has to be able to see what they are moderating.
+        /// </summary>
+        private Task<bool> IsModeratorAsync()
+        {
+            return AuthorizationService.IsGrantedAsync(Feature_Request_PortalPermissions.FeatureRequests.ChangeStatus);
         }
 
         private static string NormalizeSorting(string? sorting)

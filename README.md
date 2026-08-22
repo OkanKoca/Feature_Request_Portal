@@ -215,7 +215,7 @@ The domain tests require no ABP infrastructure; the entity is constructed direct
 
 4. **Votes and comments of a deleted request remain in the database.** The `Vote` and `Comment` entities do not implement `ISoftDelete`. Once a request is soft-deleted, ABP's data filter hides it and the child records become unreachable, so removing them was unnecessary.
 
-5. **Anonymous access returns 404.** As explained above, to avoid disclosing the existence of a record.
+5. **Signed-in users see every reviewed request.** The specification only restricts anonymous visitors, so this was a design decision. `Pending` stays private to its author because nobody has reviewed it yet; every other status is the result of a decision and worth showing. Hiding `Planned` or `Completed` requests would have removed the most useful information the portal has. Access denied on the detail endpoint returns 404 rather than 403, to avoid disclosing that a record exists.
 
 6. **Comment authors are displayed by username.** The `Comment` entity only stores `CreatorId`. Usernames are resolved from Identity in a single batched query while the detail page loads, rather than issuing one query per comment.
 
