@@ -177,7 +177,7 @@ The duplicate-vote check, the insertion into the collection, and the counter inc
 
 #### Anonymous visibility rule
 
-Anonymous users may only see requests in the `Approved` status. The rule is applied in two places: as a `WhereIf` clause on the list query, and on the detail endpoint.
+Anonymous users may only see requests in the `Approved` status. The rule is applied in two places: as a filter on the list query, and on the detail endpoint.
 
 When access is denied on the detail endpoint, an `EntityNotFoundException` is thrown rather than returning `403 Forbidden`. The goal is to avoid disclosing that the record exists; a `403` would confirm that a record with that `Id` is present.
 
